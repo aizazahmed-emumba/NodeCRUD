@@ -44,6 +44,7 @@ export const refreshToken = async (req, res, next) => {
   if (error) {
     res.status(401);
     next(new Error(message));
+    return;
   }
 
   if (tokenDetails) {
@@ -51,7 +52,7 @@ export const refreshToken = async (req, res, next) => {
     const accessToken = jwt.sign(
       payload,
       process.env.ACCESS_TOKEN_PRIVATE_KEY,
-      { expiresIn: "1m" }
+      { expiresIn: "20m" }
     );
     return res.status(200).json({
       accessToken,
@@ -61,6 +62,7 @@ export const refreshToken = async (req, res, next) => {
 
   res.status(401);
   next(new Error("Internal Server Error"));
+  return;
 };
 
 export const logout = async (req, res, next) => {
