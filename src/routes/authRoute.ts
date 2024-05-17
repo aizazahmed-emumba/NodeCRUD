@@ -1,7 +1,7 @@
 import express from "express";
-import validate from "../middleware/validateMiddleware.js";
-import { logInSchema, refreshTokenSchema } from "../schema/authValidation.js";
-import { login, logout, refreshToken } from "../controller/authController.js";
+import validate from "../middleware/validateMiddleware";
+import { logInSchema, refreshTokenSchema } from "../schema/authValidation";
+import { login, logout, refreshToken } from "../controller/authController";
 
 const router = express.Router();
 

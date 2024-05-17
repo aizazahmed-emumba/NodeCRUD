@@ -1,11 +1,12 @@
-import { User } from "../model/User.js";
-import UserToken from "../model/UserToken.js";
+import { User } from "../model/User";
+import UserToken from "../model/UserToken";
 import bcrypt from "bcrypt";
-import generateTokens from "../utils/generateTokens.js";
-import verifyRefreshToken from "../utils/verifyRefreshToken.js";
+import generateTokens from "../utils/generateTokens";
+import verifyRefreshToken from "../utils/verifyRefreshToken";
 import jwt from "jsonwebtoken";
+import {Request , Response , NextFunction} from "express";
 
-export const login = async (req, res, next) => {
+export const login = async (req:Request, res: Response, next : NextFunction ) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
@@ -36,7 +37,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const refreshToken = async (req, res, next) => {
+export const refreshToken = async (req:Request, res: Response, next : NextFunction ) => {
   const result = await verifyRefreshToken(req.body.refreshToken);
 
   const { tokenDetails, message, error } = result;
@@ -46,7 +47,7 @@ export const refreshToken = async (req, res, next) => {
     next(new Error(message));
     return;
   }
-
+  
   if (tokenDetails) {
     const payload = { _id: tokenDetails._id, roles: tokenDetails.roles };
     const accessToken = jwt.sign(
@@ -65,7 +66,7 @@ export const refreshToken = async (req, res, next) => {
   return;
 };
 
-export const logout = async (req, res, next) => {
+export const logout = async (req:Request, res: Response) => {
   try {
     const userToken = await UserToken.findOne({ token: req.body.refreshToken });
     if (!userToken)
@@ -73,7 +74,7 @@ export const logout = async (req, res, next) => {
         .status(200)
         .json({ error: false, message: "Logged Out Sucessfully" });
 
-    await userToken.remove();
+    await UserToken.findByIdAndDelete(userToken._id);
     res.status(200).json({ error: false, message: "Logged Out Sucessfully" });
   } catch (err) {
     console.log(err);

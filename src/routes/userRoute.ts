@@ -5,15 +5,15 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-} from "../controller/userController.js";
-import validate from "../middleware/validateMiddleware.js";
+} from "../controller/userController";
+import validate from "../middleware/validateMiddleware";
 import {
   createUserSchema,
   deleteUserSchema,
   getUserByIdSchema,
   updateUserSchema,
-} from "../schema/userSchema.js";
-import isAuthenticated from "../middleware/isAuthenticated.js";
+} from "../schema/userSchema";
+import isAuthenticated from "../middleware/isAuthenticated";
 const router = express.Router();
 
 router

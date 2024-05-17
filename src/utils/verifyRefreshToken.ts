@@ -1,7 +1,8 @@
-import UserToken from "../model/UserToken.js";
+import UserToken from "../model/UserToken";
 import jwt from "jsonwebtoken";
+import RefreshTokenDecoded from "../types/RefreshToken";
 
-const verifyRefreshToken = async (refreshToken) => {
+const verifyRefreshToken = async (refreshToken : string) => {
   try {
     const privateKey = process.env.REFRESH_TOKEN_PRIVATE_KEY;
 
@@ -10,7 +11,7 @@ const verifyRefreshToken = async (refreshToken) => {
       return { error: true, message: "Invalid refresh token" };
     }
 
-    const tokenDetails = jwt.verify(refreshToken, privateKey);
+    const tokenDetails = jwt.verify(refreshToken, privateKey) as   RefreshTokenDecoded;
     if (!tokenDetails) {
       return { error: true, message: "Invalid refresh token" };
     }

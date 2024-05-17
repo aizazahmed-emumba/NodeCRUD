@@ -1,8 +1,8 @@
-import { User } from "../model/User.js";
-import redisClient from "../config/redisClient.js";
-import { addToCache, getFromCache } from "../utils/cache.js";
+import { NextFunction, Request, Response } from "express";
+import { User } from "../model/User";
+import { addToCache, getFromCache } from "../utils/cache";
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (req:Request, res: Response, next : NextFunction ) => {
   try {
     const users = await User.find();
 
@@ -12,7 +12,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res, next) => {
+export const createUser = async (req:Request, res: Response, next : NextFunction ) => {
   const user = req.body;
 
   const newUser = new User(user);
@@ -35,7 +35,7 @@ export const createUser = async (req, res, next) => {
   }
 };
 
-export const getUserById = async (req, res, next) => {
+export const getUserById = async (req:Request, res: Response, next : NextFunction ) => {
   const id = req.params.id;
   if (!id) {
     res.status(400);
@@ -69,7 +69,7 @@ export const getUserById = async (req, res, next) => {
   }
 };
 
-export const updateUser = async (req, res, next) => {
+export const updateUser = async (req:Request, res: Response, next : NextFunction ) => {
   const id = req.params.id;
   const user = req.body;
 
@@ -94,12 +94,12 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
-export const deleteUser = async (req, res, next) => {
+export const deleteUser = async (req:Request, res: Response, next : NextFunction ) => {
   const id = req.params.id;
   try {
     const user = await User.findByIdAndDelete(id);
     if (user) {
-      res.send(user);
+      return res.send(user);
     } else {
       res.status(404);
       const error = new Error("User not found");

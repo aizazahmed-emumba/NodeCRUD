@@ -1,4 +1,4 @@
-import client from "../config/redisClient.js";
+import client from "../config/redisClient";
 
 const CACHE_LIMIT = 2;
 
